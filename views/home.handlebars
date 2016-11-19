@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Example App</title>
+    <script src="angular/angular.js"></script>
+    <script src="angular-route/angular-route.js"></script>
+    <script src="angular-resource/angular-resource.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="fontawesome/css/font-awesome.css">
+</head>
+<body ng-app="myApp">
+<input type="hidden" id="role" value="{{user.role}}">
+<input type="hidden" id="username" value="{{user.username}}">
+<div class="header-bar" ng-controller="headerController">
+    <div class="sidebar-title">ATC<sup>&copy;</sup></div>
+    <div class="role">My Role : {{user.role}}</div>
+    <div class="title">{[{getActiveMenu().title}]}</div>
+    <div class="logout">
+        <a href="/logout" class="btn btn-danger">
+            <i class="fa fa-power-off "></i>
+        </a>
+    </div>
+</div>
+
+<section ng-controller="mainController">
+    <div class="leftSideBar">
+        <ul>
+            <li ng-repeat="menu in menuItems" ng-class="{active : isActive(menu)}">
+                <a href="#{[{menu.route}]}">
+                    <span class="fa {[{menu.icon}]}"></span>
+                    {[{menu.name}]}
+                </a>
+            </li>
+        </ul>
+        <!--<ul>-->
+        <!--<li class="active"><a href="#/productManagement">-->
+        <!--<span class="fa fa-cubes"></span>-->
+        <!--Products-->
+        <!--</a></li>-->
+        <!--<li ><a href="#">-->
+        <!--<span class="fa fa-cart-arrow-down"></span>-->
+        <!--Purchase-->
+        <!--</a></li>-->
+        <!--<li ><a href="#">-->
+        <!--<span class="fa fa-calculator"></span>-->
+        <!--Billing-->
+        <!--</a></li>-->
+        <!--<li ><a href="#">-->
+        <!--<span class="fa fa-vcard"></span>-->
+        <!--Party-->
+        <!--</a></li>-->
+        <!--&lt;!&ndash;<li ><a href="#">&ndash;&gt;-->
+        <!--&lt;!&ndash;<span class="fa fa-calendar-o"></span>&ndash;&gt;-->
+        <!--&lt;!&ndash;Meeting&ndash;&gt;-->
+        <!--&lt;!&ndash;</a></li>&ndash;&gt;-->
+        <!--<li ><a href="#">-->
+        <!--<span class="fa fa-list"></span>-->
+        <!--Reporting-->
+        <!--</a></li>-->
+        <!--<li ><a href="#">-->
+        <!--<span class="fa fa-gear"></span>-->
+        <!--Settings-->
+        <!--</a></li>-->
+        <!--<li ><a href="#">-->
+        <!--<span class="fa fa-question"></span>-->
+        <!--Help-->
+        <!--</a></li>-->
+        <!--</ul>-->
+    </div>
+    <div id="content" ng-view class="main-content"></div>
+</section>
+
+
+<script src="js/app.js"></script>
+<script src="js/controllers/maincontroller.js"></script>
+<script src="js/controllers/headercontroller.js"></script>
+<script src="js/controllers/productManagercontroller.js"></script>
+<script src="js/controllers/purchaseManagercontroller.js"></script>
+<script src="js/services/menuService.js"></script>
+</body>
+</html>
