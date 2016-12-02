@@ -1,19 +1,20 @@
 <h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h1>Welcome to Product Management time is {{date}}</h1>
-<h4>Welcome to Product Management time is {{date}} 13133131</h4>
+<!--<table ng-table="tableParams" show-filter="true" class="table">-->
+    <!--<tr ng-repeat="product in $data">-->
+        <!--<td title="'Name'">-->
+            <!--{{product.name}}</td>-->
+        <!--<td title="'Description'">-->
+            <!--{{product.description}}</td>-->
+    <!--</tr>-->
+<!--</table>-->
 
-
+<table ng-table="tableParams" show-filter="true" class="table">
+    <tr ng-repeat="product in $data">
+        <td data-title="'Name'" filter="{ 'name': 'text' }" sortable="'name'" sort-indicator="'span'">
+            {{product.name}}
+        </td>
+        <td data-title="'Description'" sortable="'Description'">
+            {{product.description}}
+        </td>
+    </tr>
+</table>

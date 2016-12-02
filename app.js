@@ -5,20 +5,21 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var productAPI = require('./routes/api/productapi');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var exphbs = require('express-handlebars');
+//var exphbs = require('express-handlebars');
 var routes = require('./routes/index');
 
 var productAPI = require('./routes/api/productapi');
 var app = express();
-var hbs = exphbs.create({/* config */});
+//var hbs = exphbs.create({/* config */});
 
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-app.engine('handlebars', hbs.engine);
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+// app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+// app.engine('handlebars', hbs.engine);
+//app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/angular', express.static(__dirname + '/node_modules/angular'));
@@ -26,9 +27,9 @@ app.use('/angular-route', express.static(__dirname + '/node_modules/angular-rout
 app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap'));
 app.use('/fontawesome', express.static(__dirname + '/node_modules/font-awesome'));
 app.use('/angular-resource', express.static(__dirname + '/node_modules/angular-resource'));
-app.use('/angular', express.static(__dirname + '/node_modules/angular'));
+app.use('/ngTable', express.static(__dirname + '/node_modules/ng-table'));
 
-app.set('view engine', 'handlebars');
+//app.set('view engine', 'handlebars');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
