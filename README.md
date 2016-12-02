@@ -7,3 +7,4 @@ make /register route accessible only to super admin user
 add emailid field to register form
 and create a forgot password route
 
+
