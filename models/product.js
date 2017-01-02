@@ -4,15 +4,18 @@ var Schema = mongoose.Schema;
 
 var ProductSchema = new Schema({
     name:           { type: String, required: true, unique: true },
-    description:    { type: String, required: true },
-    price:          { type: Number, required: true },
+    retailPrice:    { type: Number, required: true },
+    wholeSaleprice: { type: Number, required: true },
     dateCreated:    { type: Date },
     dateModified:   { type: Date },
-    openingBalance: { type: Number }
+    inStock:        { type: Number },
+    firm:           { type: String, required: true },
+    user:           { type: String },
+    productCode:    { type: String, unique: true }
 });
 
 ProductSchema.pre('save', function(next){
-    now = new Date();
+    var now = new Date();
     this.dateModified = now;
     if ( !this.dateCreated ) {
         this.dateCreated = now;
@@ -20,14 +23,15 @@ ProductSchema.pre('save', function(next){
     next();
 });
 
-var ProductModel = db.model('Fruit', ProductSchema);
+var ProductModel = db.model('Product', ProductSchema);
 
 //CREATE new Product
 function createProduct(Product, callbacks){
     var f = new ProductModel({
         name:           Product.name,
-        description:    Product.description,
         price:          Product.price,
+        inStock:        Product.inStock,
+        firm:           Product.firm,
         openingBalance : Product.openingBalance
     });
 
