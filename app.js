@@ -28,6 +28,7 @@ app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap'));
 app.use('/fontawesome', express.static(__dirname + '/node_modules/font-awesome'));
 app.use('/angular-resource', express.static(__dirname + '/node_modules/angular-resource'));
 app.use('/ngTable', express.static(__dirname + '/node_modules/ng-table'));
+app.use('/angular-ui-bootstrap', express.static(__dirname + '/node_modules/angular-ui-bootstrap'));
 
 //app.set('view engine', 'handlebars');
 app.use(logger('dev'));
