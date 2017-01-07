@@ -7,6 +7,9 @@ myApp.factory('productService', function ($resource) {
           getProducts: {
               method: 'GET',
               isArray: true
+          },
+          addProduct : {
+              method: 'POST'
           }
       }
 )});

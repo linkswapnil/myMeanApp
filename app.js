@@ -8,18 +8,14 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-//var exphbs = require('express-handlebars');
 var routes = require('./routes/index');
 
 var productAPI = require('./routes/api/productapi');
 var app = express();
-//var hbs = exphbs.create({/* config */});
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-// app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-// app.engine('handlebars', hbs.engine);
-//app.set('views', path.join(__dirname, 'views'));
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/angular', express.static(__dirname + '/node_modules/angular'));

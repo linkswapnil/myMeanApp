@@ -1,8 +1,11 @@
 var db = require('../config/mongodb').init();
 var mongoose = require('mongoose');
+var autoIncrement = require('mongoose-auto-increment');
+autoIncrement.initialize(db);
 var Schema = mongoose.Schema;
 
 var ProductSchema = new Schema({
+    productId:      { type: Number, required: true, unique: true },
     name:           { type: String, required: true, unique: true },
     retailPrice:    { type: Number, required: true },
     wholeSaleprice: { type: Number, required: true },
@@ -10,9 +13,22 @@ var ProductSchema = new Schema({
     dateModified:   { type: Date },
     inStock:        { type: Number },
     firm:           { type: String, required: true },
-    user:           { type: String },
-    productCode:    { type: String, unique: true }
+    iconURL :       { type: String },
+    brandName:      { type: String },
+    mrp:            { type: Number },
+    tax:            { type: Number }
 });
+
+var IconsSchema = new Schema({
+    iconId:      { type: Number, required: true, unique: true },
+    imageData :    { type: String }
+});
+
+IconsSchema.plugin(autoIncrement.plugin, { model: 'Icons', field: 'iconId',  startAt: 1 });
+
+IconsSchema.set('validateBeforeSave', false);
+
+ProductSchema.plugin(autoIncrement.plugin, { model: 'Product', field: 'productId',  startAt: 100 });
 
 ProductSchema.pre('save', function(next){
     var now = new Date();
@@ -25,22 +41,26 @@ ProductSchema.pre('save', function(next){
 
 var ProductModel = db.model('Product', ProductSchema);
 
+var IconsModel = db.model('Icons', IconsSchema);
+
 //CREATE new Product
 function createProduct(Product, callbacks){
     var f = new ProductModel({
         name:           Product.name,
-        price:          Product.price,
+        retailPrice:    Product.retailPrice,
+        wholeSaleprice: Product.wholeSaleprice,
         inStock:        Product.inStock,
         firm:           Product.firm,
-        openingBalance : Product.openingBalance
+        brandName:      Product.brandName,
+        mrp:            Product.mrp,
+        tax:            Product.tax,
+        iconURL:        Product.iconURL
     });
 
     f.save(function (err) {
         if (!err) {
-            //if(!isInTest) console.log("[ADD]   Product created with id: " + f._id);
             callbacks.success(f);
         } else {
-            //if(!isInTest) console.log(err);
             callbacks.error(err);
         }
     });
@@ -105,8 +125,39 @@ function deleteProduct(id, callbacks){
     });
 }
 
+//READ Product by id
+function getIconById(id, callbacks){
+    return IconsModel.find({ iconId : id}, function (err, icon) {
+        if (!err) {
+            callbacks.success(icon);
+        } else {
+            callbacks.error(err);
+        }
+    });
+}
+
+function saveProductIcon(data, callbacks) {
+
+    var record = new IconsModel({
+        imageData : data.data
+    });
+
+    record.save(function (err) {
+        if (!err) {
+            //if(!isInTest) console.log("[ADD]   Product created with id: " + f._id);
+            callbacks.success(record);
+        } else {
+            console.log(err);
+            callbacks.error(err);
+        }
+    });
+
+}
+
 module.exports.createProduct = createProduct;
 module.exports.getProducts = getProducts;
 module.exports.getProductById = getProductById;
 module.exports.updateProduct = updateProduct;
 module.exports.deleteProduct = deleteProduct;
+module.exports.saveProductIcon = saveProductIcon;
+module.exports.getIconById = getIconById;
