@@ -1,22 +1,27 @@
-<h1>Welcome time is {{date}}</h1>
-<!--<table ng-table="tableParams" show-filter="true" class="table">-->
-    <!--<tr ng-repeat="product in $data">-->
-        <!--<td title="'Name'">-->
-            <!--{{product.name}}</td>-->
-        <!--<td title="'Description'">-->
-            <!--{{product.description}}</td>-->
-    <!--</tr>-->
-<!--</table>-->
+<div ng-show="feedback.visible" class="alert alert-{{feedback.status}}">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="hideFeedBack()">×</button>
+    <span class="fa fa-{{feedback.icon}}"></span> <strong>{{feedback.message}}</strong>
+</div>
 
 <table ng-table="tableParams" show-filter="true" class="table">
     <tr ng-repeat="product in $data">
+        <td data-title="'Icon'">
+            <img height="30" width="30" src={{product.iconURL}}>
+        </td>
+        <td data-title="'Code'" filter="{ 'productId': 'text' }" sortable="'productId'" sort-indicator="'span'">
+            {{product.productId}}
+        </td>
         <td data-title="'Name'" filter="{ 'name': 'text' }" sortable="'name'" sort-indicator="'span'">
             {{product.name}}
         </td>
-        <td data-title="'Description'" sortable="'Description'">
-            {{product.description}}
+        <td data-title="'Brand'" sortable="'Brand'">
+            {{product.brandName}}
+        </td>
+        <td data-title="''">
+            <span style="cursor:pointer;" ng-click="deleteProduct(product._id)" class="fa fa-trash"></span>
+            <span style="cursor:pointer;margin-left: 10px" ng-click="editProduct(product)" class="fa fa-pencil"></span>
         </td>
     </tr>
 </table>
 
-<button ng-click="addProduct()" class="btn btn-primary">Add</button>
+<button ng-click="addProduct('Add')" class="btn btn-primary">Add</button>

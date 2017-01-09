@@ -17,21 +17,23 @@ router.post('/', function (req, res){
             wholeSaleprice: req.body.wholeSaleprice,
             inStock : req.body.inStock,
             firm : req.body.firm,
-            brand: req.body.brandName,
+            brandName: req.body.brandName,
             mrp : req.body.mrp,
             tax: req.body.tax,
-            iconURL: req.body.iconURL
+            iconURL: req.body.iconURL,
+            createdBy: req.user.username
         }, {
             success: function(f){
-                res.status(201).send({msg: 'Product created successfully: '+req.body.name, data: f});
+                res.status(201).send({message: 'Product '+ f.name + ' code: ' + f.productId +' created successfully', data: f});
             },
             error: function(err){
                 if(err.code === 11000){
                     res.status(500).send({
-                        "message" : "Product name already present !"
+                        "message" : "Product already added!"
                     });
                 }else{
-                    res.status(500).send(err);
+                    console.log(err);
+                    res.status(500).send({message : "Failed to create Product"});
                 }
             }
         });
@@ -164,29 +166,45 @@ router.get('/:id', function (req, res){
 
 //UPDATE product
 router.put('/:id', function (req, res){
-    productDAO.updateProduct(req.params.id, {
-            name: req.body.name,
-            description: req.body.description,
-            price: req.body.price,
-            openingBalance : req.body.openingBalance
-        }, {
+    productDAO.updateProduct(req.params.id,
+            {
+                name: req.body.name,
+                retailPrice: req.body.retailPrice,
+                wholeSaleprice: req.body.wholeSaleprice,
+                inStock : req.body.inStock,
+                firm : req.body.firm,
+                brandName: req.body.brandName,
+                mrp : req.body.mrp,
+                tax: req.body.tax,
+                iconURL: req.body.iconURL,
+                createdBy: req.user.username
+            },
+            {
             success: function(f){
-                res.status(200).send({msg: 'Product updated succesfully: '+JSON.stringify(f), data: f});
+                res.status(201).send({message: 'Product '+ f.name + ' code: ' + f.productId +' edited successfully', data: f});
             },
             error: function(err){
-                res.status(500).send(err);
+                if(err.code === 11000){
+                    res.status(500).send({
+                        "message" : "Product already added!"
+                    });
+                }else{
+                    console.log(err);
+                    res.status(500).send({message : "Failed to create Product"});
+                }
             }
-        });
+            }
+    );
 });
 
 //DELETE product
 router.delete('/:id', function (req, res){
         productDAO.deleteProduct(req.params.id ,{
             success: function(f){
-                res.status(200).send({msg: 'Product deleted succesfully: ' + req.params.id, data: f});
+                res.status(200).send({message: 'Product ' + f.name + ' of brand '+ f.brandName + " deleted successfully" , data: f});
             },
             error: function(err){
-                res.status(500).send(err);
+                res.status(500).send({message: 'Failed deleting product'});
             }
         });
 });

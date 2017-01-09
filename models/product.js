@@ -6,18 +6,21 @@ var Schema = mongoose.Schema;
 
 var ProductSchema = new Schema({
     productId:      { type: Number, required: true, unique: true },
-    name:           { type: String, required: true, unique: true },
+    name:           { type: String, required: true},
     retailPrice:    { type: Number, required: true },
     wholeSaleprice: { type: Number, required: true },
-    dateCreated:    { type: Date },
-    dateModified:   { type: Date },
     inStock:        { type: Number },
     firm:           { type: String, required: true },
     iconURL :       { type: String },
     brandName:      { type: String },
     mrp:            { type: Number },
-    tax:            { type: Number }
+    tax:            { type: Number },
+    dateCreated:    { type: Date },
+    dateModified:   { type: Date },
+    createdBy:      { type: String }
 });
+
+ProductSchema.index({ name: 1, brandName: 1}, { unique: true });
 
 var IconsSchema = new Schema({
     iconId:      { type: Number, required: true, unique: true },
@@ -54,12 +57,13 @@ function createProduct(Product, callbacks){
         brandName:      Product.brandName,
         mrp:            Product.mrp,
         tax:            Product.tax,
-        iconURL:        Product.iconURL
+        iconURL:        Product.iconURL,
+        createdBy:      Product.createdBy
     });
 
     f.save(function (err) {
         if (!err) {
-            callbacks.success(f);
+            callbacks.success(f._doc);
         } else {
             callbacks.error(err);
         }
@@ -93,10 +97,16 @@ function getProductById(id, callbacks){
 function updateProduct(id, Product, callbacks){
     return ProductModel.findById(id, function (err, f) {
         if (!err) {
-            if (Product.name) f.name = Product.name;
-            if (Product.description) f.description = Product.description;
-            if (Product.price) f.price = Product.price;
-
+            f.name = Product.name;
+            f.retailPrice = Product.retailPrice;
+            f.wholeSaleprice = Product.wholeSaleprice;
+            f.inStock = Product.inStock;
+            f.firm = Product.firm;
+            f.brandName = Product.brandName;
+            f.mrp = Product.mrp;
+            f.tax = Product.tax;
+            f.iconURL = Product.iconURL;
+            f.createdBy = Product.createdBy;
             return f.save(function (err) {
                 if (!err) {
                     callbacks.success(f);
@@ -114,7 +124,7 @@ function deleteProduct(id, callbacks){
         if (!err) {
             return f.remove(function (err) {
                 if (!err) {
-                    callbacks.success(f);
+                    callbacks.success(f._doc);
                 } else {
                     callbacks.error(err);
                 }
