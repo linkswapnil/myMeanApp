@@ -13,6 +13,10 @@ myApp.config(function($routeProvider){
             templateUrl: "js/templates/purchaseManagement.html",
             controller: "purchaseManagerController"
         })
+        .when("/firmManagement", {
+            templateUrl: "js/templates/firm/manageFirms.html",
+            controller: "firmController"
+        })
         // .when("/private", {
         //     templateUrl: "private",
         //     controller: "GeneralController",

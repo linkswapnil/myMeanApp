@@ -3,14 +3,20 @@ myApp.service("menuService", function($location){
     self.role = self.role || document.getElementById('role').value;
     self.userName = self.role || document.getElementById('username').value;
     self.menus = {
+        "firms": {
+            name: "Firms",
+            title: "Firm Management",
+            route: "/firmManagement",
+            icon: 'fa-university'
+        },
         "products" : {
-            name : "products",
+            name: "Products",
             title : "Product Management",
             route : "/productManagement",
             icon : 'fa-cubes'
         },
         "purchase" : {
-            name : "purchase",
+            name: "Purchase",
             title : "Purchase Management",
             route : "/purchaseManagement",
             icon : 'fa-cart-arrow-down'
@@ -20,7 +26,10 @@ myApp.service("menuService", function($location){
     self.getMenuItems = function () {
         var menuList = [];
         if(self.role === 'admin'){
+            menuList.push(self.menus['firms']);
             menuList.push(self.menus['products']);
+            menuList.push(self.menus['purchase']);
+        } else if (self.role === 'operator') {
             menuList.push(self.menus['purchase']);
         }
         return menuList;

@@ -11,6 +11,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var routes = require('./routes/index');
 
 var productAPI = require('./routes/api/productapi');
+var firmAPI = require('./routes/api/firmapi');
+
 var app = express();
 
 app.set('views', __dirname + '/views');
@@ -58,6 +60,7 @@ routes.get('/user', function (req, res) {
 
 app.use('/', routes);
 app.use('/api/product', productAPI);
+app.use('/api/firm', firmAPI);
 
 // passport config
 var Account = require('./models/account');

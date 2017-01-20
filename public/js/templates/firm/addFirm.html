@@ -1,0 +1,37 @@
+<div id="addFirm" ng-init="init()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="cancel()">×</button>
+        <h3> Add Firm </h3>
+    </div>
+
+    <div>
+        <label for="firmName">Firm Name</label>
+        <input name="firmName" ng-model="firmName" id="firmName" type="text">
+    </div>
+
+    <div>
+        <label for="tinNumber">Tin Number</label>
+        <input name="tinNumber" ng-model="tinNumber" id="tinNumber" type="text">
+    </div>
+
+    <div>
+        <label for="address">Address</label>
+        <textarea name="address" ng-model="address" id="address" type="text"> </textarea>
+    </div>
+
+    <div>
+        <label for="contactNumber">Contact Number</label>
+        <input name="contactNumber" ng-model="contactNumber" id="contactNumber" type="text">
+    </div>
+
+    <div>
+        <img id="firmIcon" class="firm-icon" alt="no icon available" src="images/uploads/default">
+        Upload Image : <input id="imageInput" name="file" type="file" accept="image/*" image="image"/>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="saveFirm()">Save</button>
+    </div>
+
+</div>
