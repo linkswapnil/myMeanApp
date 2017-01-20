@@ -17,5 +17,5 @@ myApp.factory('productService', function ($resource) {
           editProduct : {
               method: 'PUT'
           }
-      }
-)});
+      });
+});

@@ -13,15 +13,12 @@ var express = require('express'),
 router.post('/', function (req, res){
     productDAO.createProduct({
             name: req.body.name,
-            retailPrice: req.body.retailPrice,
-            wholeSaleprice: req.body.wholeSaleprice,
-            inStock : req.body.inStock,
             firm : req.body.firm,
             brandName: req.body.brandName,
-            mrp : req.body.mrp,
-            tax: req.body.tax,
             iconURL: req.body.iconURL,
-            createdBy: req.user.username
+            priceList : req.body.priceList,
+            createdBy: req.user.username,
+            editedBy : req.user.username
         }, {
             success: function(f){
                 res.status(201).send({message: 'Product '+ f.name + ' code: ' + f.productId +' created successfully', data: f});
@@ -169,15 +166,11 @@ router.put('/:id', function (req, res){
     productDAO.updateProduct(req.params.id,
             {
                 name: req.body.name,
-                retailPrice: req.body.retailPrice,
-                wholeSaleprice: req.body.wholeSaleprice,
-                inStock : req.body.inStock,
                 firm : req.body.firm,
                 brandName: req.body.brandName,
-                mrp : req.body.mrp,
-                tax: req.body.tax,
                 iconURL: req.body.iconURL,
-                createdBy: req.user.username
+                priceList : req.body.priceList,
+                editedBy : req.user.username
             },
             {
             success: function(f){

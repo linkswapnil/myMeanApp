@@ -4,21 +4,21 @@ var autoIncrement = require('mongoose-auto-increment');
 autoIncrement.initialize(db);
 var Schema = mongoose.Schema;
 
-var ProductSchema = new Schema({
+var productAttributes = {
     productId:      { type: Number, required: true, unique: true },
     name:           { type: String, required: true},
-    retailPrice:    { type: Number, required: true },
-    wholeSaleprice: { type: Number, required: true },
-    inStock:        { type: Number },
     firm:           { type: String, required: true },
     iconURL :       { type: String },
     brandName:      { type: String },
-    mrp:            { type: Number },
     tax:            { type: Number },
     dateCreated:    { type: Date },
     dateModified:   { type: Date },
-    createdBy:      { type: String }
-});
+    createdBy:      { type: String },
+    editedBy:       { type: String },
+    priceList:      { type: Array }
+};
+
+var ProductSchema = new Schema(productAttributes);
 
 ProductSchema.index({ name: 1, brandName: 1}, { unique: true });
 
@@ -48,18 +48,8 @@ var IconsModel = db.model('Icons', IconsSchema);
 
 //CREATE new Product
 function createProduct(Product, callbacks){
-    var f = new ProductModel({
-        name:           Product.name,
-        retailPrice:    Product.retailPrice,
-        wholeSaleprice: Product.wholeSaleprice,
-        inStock:        Product.inStock,
-        firm:           Product.firm,
-        brandName:      Product.brandName,
-        mrp:            Product.mrp,
-        tax:            Product.tax,
-        iconURL:        Product.iconURL,
-        createdBy:      Product.createdBy
-    });
+
+    var f = new ProductModel(Product);
 
     f.save(function (err) {
         if (!err) {
@@ -98,15 +88,12 @@ function updateProduct(id, Product, callbacks){
     return ProductModel.findById(id, function (err, f) {
         if (!err) {
             f.name = Product.name;
-            f.retailPrice = Product.retailPrice;
-            f.wholeSaleprice = Product.wholeSaleprice;
-            f.inStock = Product.inStock;
             f.firm = Product.firm;
-            f.brandName = Product.brandName;
-            f.mrp = Product.mrp;
-            f.tax = Product.tax;
             f.iconURL = Product.iconURL;
-            f.createdBy = Product.createdBy;
+            f.brandName = Product.brandName;
+            f.tax = Product.tax;
+            f.priceList = Product.priceList;
+            f.editedBy = Product.createdBy;
             return f.save(function (err) {
                 if (!err) {
                     callbacks.success(f);

@@ -54,7 +54,7 @@ myApp.controller('productManagerController',  ['$scope', '$http', 'NgTableParams
         var modalInstance = $uibModal.open({
             templateUrl: 'js/templates/editProduct.html',
             controller: 'editProductController',
-            bindToController : true,
+            windowClass: 'app-modal-window',
             resolve: {
                 product: function () {
                     return product;
@@ -75,8 +75,6 @@ myApp.controller('productManagerController',  ['$scope', '$http', 'NgTableParams
                 $scope.feedback.visible = true;
                 $scope.feedback.status = 'danger';
             }
-        }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
         });
     };
 
@@ -84,7 +82,8 @@ myApp.controller('productManagerController',  ['$scope', '$http', 'NgTableParams
 
         var modalInstance = $uibModal.open({
             templateUrl: 'js/templates/addProduct.html',
-            controller: 'addProductController'
+            controller: 'addProductController',
+            windowClass: 'app-modal-window'
         });
 
         modalInstance.result.then(function (response) {
@@ -100,8 +99,6 @@ myApp.controller('productManagerController',  ['$scope', '$http', 'NgTableParams
                 $scope.feedback.visible = true;
                 $scope.feedback.status = 'danger';
             }
-        }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
         });
     };
 }]);
@@ -115,7 +112,7 @@ function createHiddenIframe() {
     return iFrame;
 }
 
-myApp.controller('editProductController',['$scope', '$uibModalInstance', 'product', 'productService',function ($scope, $uibModalInstance, product, productService) {
+myApp.controller('editProductController',['$scope', '$uibModalInstance', 'product', 'productService','unitService',function ($scope, $uibModalInstance, product, productService, unitService) {
 
   $scope.model = {};
 
@@ -154,18 +151,39 @@ myApp.controller('editProductController',['$scope', '$uibModalInstance', 'produc
         };
     };
 
+    $scope.standardUnits  = unitService.getStandardUnits();
+
+    $scope.addPriceList = function () {
+        $scope.model.priceList.push({});
+    };
+
+    $scope.$watch('priceList', function() {
+        var a = $scope.model.priceList.filter(function (price) {
+            if(price.unit === 'other'){
+                return true;
+            }
+        });
+        // when any of the list contains selectedUnit as other
+        if(a.length > 0){
+            $scope.displayOthers = true;
+        }else{
+            $scope.displayOthers = false;
+        }
+
+    }, true);
+
+    $scope.removePriceList = function (index) {
+        $scope.model.priceList.splice(index, 1);
+    };
+
     $scope.editProduct = function(){
 
         var data = {
             name: $scope.model.name,
-            retailPrice: $scope.model.retailPrice,
-            wholeSaleprice: $scope.model.wholeSaleprice,
-            inStock : $scope.model.inStock,
             firm : $scope.model.firm,
             brandName: $scope.model.brandName,
-            mrp : $scope.model.mrp,
-            tax : $scope.model.tax,
-            iconURL : imageElement.src.replace(/\/$/,'') //get rid of / at the end of src
+            iconURL : imageElement.src.replace(/\/$/,''), //get rid of / at the end of src
+            priceList : $scope.model.priceList
         };
 
         productService.editProduct({id: $scope.model._id}, data).$promise.then(function (res) {
@@ -184,9 +202,15 @@ myApp.controller('editProductController',['$scope', '$uibModalInstance', 'produc
 
 }]);
 
-myApp.controller('addProductController',['$scope', '$uibModalInstance', 'productService', function ($scope, $uibModalInstance, productService) {
+myApp.controller('addProductController',['$scope', '$uibModalInstance', 'productService', 'unitService', function ($scope, $uibModalInstance, productService, unitService) {
 
     var imageElement, container;
+
+    $scope.standardUnits = [];
+    $scope.stockDetails = {};
+
+    $scope.standardUnits  = unitService.getStandardUnits();
+    $scope.priceList = [{}];
 
     $scope.init = function () {
         var hiddenIframe = createHiddenIframe();
@@ -219,18 +243,37 @@ myApp.controller('addProductController',['$scope', '$uibModalInstance', 'product
         $uibModalInstance.dismiss('cancel');
     };
 
+    $scope.addPriceList = function () {
+        $scope.priceList.push({});
+    };
+
+    $scope.$watch('priceList', function() {
+        var a = $scope.priceList.filter(function (price) {
+            if(price.unit === 'other'){
+                return true;
+            }
+        });
+        // when any of the list contains selectedUnit as other
+        if(a.length > 0){
+            $scope.displayOthers = true;
+        }else{
+            $scope.displayOthers = false;
+        }
+
+    }, true);
+
+    $scope.removePriceList = function (index) {
+        $scope.priceList.splice(index, 1);
+    };
+
     $scope.saveProduct = function(){
 
         var data = {
             name: $scope.productName,
-            retailPrice: 11.10,
-            wholeSaleprice: 10,
-            inStock : 100,
-            firm : 'ATC',
+            firm : $scope.firm,
             brandName: $scope.brandName,
-            mrp : 12,
-            tax : 5,
-            iconURL : imageElement.src.replace(/\/$/,'') //get rid of / at the end of src
+            iconURL : imageElement.src.replace(/\/$/,''), //get rid of / at the end of src
+            priceList : $scope.priceList
         };
 
         productService.addProduct(data).$promise.then(function (res) {

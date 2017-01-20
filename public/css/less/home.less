@@ -63,6 +63,7 @@ body{
   box-shadow: 10px 5px 15px #888888;
   min-height: 52px;
   width: 100%;
+  background: white;
   .role{
     border-right: 1px solid #888888;
     width: 18%;
@@ -93,11 +94,45 @@ body{
 }
 
 .main-content{
-  position: fixed;
-  top: 60px;
-  left: 150px;
-  width: 89%;
-  height: 80%;
-  overflow: auto;
-  font-size: 14px;
+  padding: 52px 0 0 150px;;
+}
+
+.app-modal-window{
+  .modal-dialog{
+    max-width: 1120px;
+  }
+}
+
+.table-container{
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    height: 51px;
+    width: 100%;
+    background: #fff;
+    border-bottom: 1px solid #ccc;
+  }
+  .ng-table-header{
+    position: absolute;
+    color: #666;
+  }
+  .ng-table-filters{
+    position: relative;
+  }
+  .pagination>li{
+    display: inline;
+  }
+  .table-outer{
+    position: static;
+    border-left: 1px solid #fafafa;
+    border-right: 1px solid #fafafa;
+    overflow-y: auto;
+    max-height: 82vh;
+    .table-style{
+      .table-head {
+        display: table-row;
+      }
+    }
+  }
 }
