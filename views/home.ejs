@@ -6,6 +6,8 @@
     <script src="angular/angular.js"></script>
     <script src="angular-route/angular-route.js"></script>
     <script src="angular-resource/angular-resource.js"></script>
+    <script src="angular-sanitize/angular-sanitize.js"></script>
+    <script src="ui-select/select.js"></script>
 
     <script src="ngTable/dist/ng-table.js"></script>
     <script src="angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
@@ -13,7 +15,9 @@
 
 
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="ui-select/select.css">
     <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
     <link rel="stylesheet" href="angular-ui-bootstrap/dist/ui-bootstrap-csp.css">
     <link rel="stylesheet" href="fontawesome/css/font-awesome.css">
     <link rel="stylesheet" href="ngTable/dist/ng-table.css">
@@ -32,7 +36,7 @@
     </div>
 </div>
 
-<section ng-controller="mainController">
+<section ng-controller="mainController as main">
     <div class="leftSideBar">
         <ul>
             <li ng-repeat="menu in menuItems" ng-class="{active : isActive(menu)}">
@@ -53,12 +57,15 @@
 <script src="js/services/productService.js"></script>
 <script src="js/services/unitService.js"></script>
 <script src="js/services/firmService.js"></script>
+<script src="js/services/purchaseService.js"></script>
 
 <script src="js/controllers/maincontroller.js"></script>
 <script src="js/controllers/headercontroller.js"></script>
 <script src="js/controllers/productManagercontroller.js"></script>
-<script src="js/controllers/purchaseManagercontroller.js"></script>
+<script src="js/controllers/purchaseController.js"></script>
 <script src="js/controllers/firmController.js"></script>
+
+<script src="js/directives/numeric-directive.js"></script>
 
 </body>
 </html>

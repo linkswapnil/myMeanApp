@@ -53,13 +53,14 @@
                     <td><select ng-model="price.unit" ng-options="unit as unit for unit in standardUnits"></select>
                         <div ng-show="price.unit === 'other'"><input type="text" ng-model="price.unitName"></div>
                     </td>
-                    <td><input type="text" ng-model="price.retailPrice"></td>
-                    <td><input type="text" ng-model="price.wholeSalePrice"></td>
-                    <td><input type="text" ng-model="price.inStockQty"></td>
+                    <td><input numeric min="0" decimals="2" type="text" ng-model="price.retailPrice"></td>
+                    <td><input numeric min="0" decimals="2" type="text" ng-model="price.wholeSalePrice"></td>
+                    <td><input numeric min="0" decimals="0" type="text" ng-model="price.inStockQty"></td>
                     <td ng-show="price.unit === 'other'"><select ng-model="price.mappedUnit"
                                                                  ng-options="unit as unit for unit in standardUnits | filter:'!other'"></select>
                     </td>
-                    <td ng-show="price.unit === 'other'"><input type="text" ng-model="price.mappedQty"></td>
+                    <td ng-show="price.unit === 'other'"><input type="text" numeric min="0" decimals="0"
+                                                                ng-model="price.mappedQty"></td>
                     <td ng-if="$index > 0">
                         <div class="remove" title="Remove unit" ng-click="$parent.removePriceList($index)">
                             <i class="fa fa-minus-circle"></i>
@@ -70,7 +71,6 @@
             </table>
         </div>
     </div>
-
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="saveProduct()">Save</button>
     </div>

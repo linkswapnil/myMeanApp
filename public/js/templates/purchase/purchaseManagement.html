@@ -1,0 +1,32 @@
+<div ng-show="feedback.visible" class="alert alert-{{feedback.status}}">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="hideFeedBack()">×</button>
+    <span class="fa fa-{{feedback.icon}}"></span> <strong>{{feedback.message}}</strong>
+</div>
+
+<div class="table-container">
+    <div class="table-outer">
+        <table ng-table="tableParams" show-filter="true" class="table table-style">
+            <tbody class="table-body">
+            <tr ng-repeat="purchase in $data" class="table-row">
+                <td data-title="'Code'" filter="{ 'purchaseId': 'text' }" sortable="'purchaseId'"
+                    sort-indicator="'span'">
+                    {{purchase.purchaseId}}
+                </td>
+                <td data-title="'Date'" filter="{ 'date': 'date' }" sortable="'name'" sort-indicator="'span'">
+                    {{purchase.date}}
+                </td>
+                <td data-title="'Total'" sortable="'Total'">
+                    {{purchase.total}}
+                </td>
+                <td data-title="''">
+                    <span style="cursor:pointer;" ng-click="deletePurchase(purchase._id)" class="fa fa-trash"></span>
+                    <span style="cursor:pointer;margin-left: 10px" ng-click="editPurchase(purchase)"
+                          class="fa fa-pencil"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<button ng-click="addPurchase()" class="btn btn-primary">Add</button>

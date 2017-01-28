@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var autoIncrement = require('mongoose-auto-increment');
 autoIncrement.initialize(db);
 var Schema = mongoose.Schema;
+var standardUnits = ['kg', 'liter', 'gram', 'ml', 'piece'];
 
 var productAttributes = {
     productId:      { type: Number, required: true, unique: true },
@@ -83,6 +84,51 @@ function getProductById(id, callbacks){
     });
 }
 
+function updateStock(priceList, unit, qty) {
+    var newStockQty;
+    priceList.forEach(function (product) {
+        if (product.unit === unit) {
+            product.inStockQty = parseInt(product.inStockQty, 10);
+            product.inStockQty += parseInt(qty, 10);
+            product.inStockQty += "";
+            newStockQty = product.inStockQty;
+        }
+    });
+    return newStockQty;
+}
+
+
+function updateInStockQty(id, unit, qty, callbacks) {
+    var promise;
+    if (standardUnits.indexOf(unit) === -1) {
+        promise = ProductModel.update({
+            "_id": id,
+            "priceList.unitName": unit
+        }, {
+            $inc: {"priceList.$.inStockQty": qty}
+        }).exec().then(function (res) {
+            console.log(res);
+        });
+    } else {
+        promise = ProductModel.update({
+            "_id": id,
+            "priceList.unit": unit
+        }, {
+            $inc: {"priceList.$.inStockQty": qty}
+        }).exec(function (err, msg) {
+            if (!err) {
+                if (callbacks)
+                    callbacks.success(msg);
+            } else {
+                if (callbacks)
+                    callbacks.error(err);
+            }
+        });
+    }
+
+    return promise;
+}
+
 //UPDATE Product
 function updateProduct(id, Product, callbacks){
     return ProductModel.findById(id, function (err, f) {
@@ -158,3 +204,4 @@ module.exports.updateProduct = updateProduct;
 module.exports.deleteProduct = deleteProduct;
 module.exports.saveProductIcon = saveProductIcon;
 module.exports.getIconById = getIconById;
+module.exports.updateInStockQty = updateInStockQty;

@@ -12,6 +12,7 @@ var routes = require('./routes/index');
 
 var productAPI = require('./routes/api/productapi');
 var firmAPI = require('./routes/api/firmapi');
+var purchaseAPI = require('./routes/api/purchaseapi');
 
 var app = express();
 
@@ -27,6 +28,8 @@ app.use('/fontawesome', express.static(__dirname + '/node_modules/font-awesome')
 app.use('/angular-resource', express.static(__dirname + '/node_modules/angular-resource'));
 app.use('/ngTable', express.static(__dirname + '/node_modules/ng-table'));
 app.use('/angular-ui-bootstrap', express.static(__dirname + '/node_modules/angular-ui-bootstrap'));
+app.use('/ui-select', express.static(__dirname + '/node_modules/ui-select/dist'));
+app.use('/angular-sanitize', express.static(__dirname + '/node_modules/angular-sanitize'));
 
 //app.set('view engine', 'handlebars');
 app.use(logger('dev'));
@@ -61,6 +64,7 @@ routes.get('/user', function (req, res) {
 app.use('/', routes);
 app.use('/api/product', productAPI);
 app.use('/api/firm', firmAPI);
+app.use('/api/purchase', purchaseAPI);
 
 // passport config
 var Account = require('./models/account');
